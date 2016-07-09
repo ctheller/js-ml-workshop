@@ -16,8 +16,11 @@ KNN.prototype.predictSingle = function(vector){
 };
 
 KNN.prototype.predict = function(vectorArray){
-	var self = this;
-	vectorArray.forEach(self.predictSingle);
+	var result = [];
+	for (var i = 0; i<vectorArray.length; i++){
+		result.push(this.predictSingle(vectorArray[i]))
+	}
+	return result;
 };
 
 KNN.prototype._distance = function(firstArray, secondArray) {
@@ -64,7 +67,15 @@ KNN.prototype._majority = function(k, array){
 };
 
 KNN.prototype.score = function(differentTestingData) {
-
+	var testingVectors = differentTestingData.map(function(e){return e[0]})
+	var testResults = this.predict(testingVectors);
+	var resultSum = 0;
+	for (var i = 0; i<testResults.length; i++){
+		if (testResults[i] == differentTestingData[i][1]){
+			resultSum++;
+		}
+	}
+	return resultSum/(testResults.length);
 };
 
 
